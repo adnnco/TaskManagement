@@ -63,7 +63,7 @@ class TaskController extends Controller
 
             return ApiResponseService::sendResponse(new TaskResource($task), 'Task updated successfully', 200);
         } catch (Exception $e) {
-            ApiResponseService::rollback($e, 'Task update failed');
+            return ApiResponseService::rollback($e, 'Task update failed');
         }
     }
 
@@ -74,7 +74,7 @@ class TaskController extends Controller
 
             return ApiResponseService::sendResponse([], 'Task deleted successfully', 200);
         } catch (Exception $e) {
-            ApiResponseService::rollback($e, 'Task deletion failed');
+            return ApiResponseService::rollback($e, 'Task deletion failed');
         }
     }
 }

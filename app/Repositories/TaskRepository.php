@@ -11,7 +11,7 @@ class TaskRepository implements TaskRepositoryInterface
     /**
      * @inheritDoc
      */
-    public function index(int $limit): mixed
+    public function index(int $limit = 10): mixed
     {
         return Task::paginate($limit);
     }

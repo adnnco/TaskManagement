@@ -49,3 +49,19 @@ it('can delete a task', function () {
         'deleted_at' => now(),
     ]);
 });
+
+it('can retrieve tasks', function () {
+    Task::factory()->count(3)->create();
+
+    $tasks = $this->taskRepository->index();
+
+    expect($tasks->total())->toBe(3);
+});
+
+it('can retrieve a single task by id', function () {
+    $task = Task::factory()->create();
+
+    $retrievedTask = $this->taskRepository->getById($task->id);
+
+    expect($retrievedTask->id)->toBe($task->id);
+});

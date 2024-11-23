@@ -17,7 +17,7 @@ interface TaskRepositoryInterface
      *
      * @return mixed
      */
-    public function index(int $limit): mixed;
+    public function index(int $limit = 10): mixed;
 
     /**
      * Store a new task.
