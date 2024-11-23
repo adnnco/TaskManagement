@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\TaskCreateRequest;
+use App\Http\Requests\Api\TaskUpdateRequest;
 use App\Http\Resources\Api\TaskResource;
 use App\Repositories\TaskRepository;
 use App\Services\ApiResponseService;
@@ -42,7 +43,18 @@ class TaskController extends Controller
         }
     }
 
-    public function update(TaskCreateRequest $request, int $id): JsonResponse
+    public function show(int $id): JsonResponse
+    {
+        try {
+            $task = $this->taskRepository->getById($id);
+
+            return ApiResponseService::sendResponse(new TaskResource($task));
+        } catch (Exception $e) {
+            ApiResponseService::rollback($e, 'Task not found');
+        }
+    }
+
+    public function update(TaskUpdateRequest $request, int $id): JsonResponse
     {
         $validated = $request->validated();
 
@@ -55,7 +67,7 @@ class TaskController extends Controller
         }
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         try {
             $this->taskRepository->delete($id);

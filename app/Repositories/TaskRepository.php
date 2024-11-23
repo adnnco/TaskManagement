@@ -43,4 +43,12 @@ class TaskRepository implements TaskRepositoryInterface
     {
         return Task::destroy($id);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getById(int $id): mixed
+    {
+        return Task::findOrFail($id);
+    }
 }
