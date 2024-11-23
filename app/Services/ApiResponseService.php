@@ -32,7 +32,7 @@ class ApiResponseService
     public static function throw(\Exception $e, string $message = 'Something went wrong! Process not completed')
     {
         Log::info($e);
-        throw new HttpResponseException(response()->json(['message' => $message], 500));
+        return throw new HttpResponseException(response()->json(['message' => $message], 500));
     }
 
     /**
