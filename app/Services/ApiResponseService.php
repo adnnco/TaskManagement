@@ -18,6 +18,7 @@ class ApiResponseService
      */
     public static function rollback(\Exception $e, string $message = 'Something went wrong! Process not completed')
     {
+        Log::error($message.' : '.$e->getMessage());
         return self::throw($e, $message);
     }
 
@@ -32,6 +33,7 @@ class ApiResponseService
     public static function throw(\Exception $e, string $message = 'Something went wrong! Process not completed')
     {
         Log::info($e);
+
         return throw new HttpResponseException(response()->json(['message' => $message], 500));
     }
 
