@@ -1,0 +1,392 @@
+{
+	"info": {
+		"_postman_id": "f6b8ab2d-05dc-4e3e-93b3-be6a646a4f85",
+		"name": "API Documentation",
+		"description": "This API provides user authentication and task management functionalities. It supports JWT-based authentication and CRUD operations for task management.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6609067"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\" : \"Test\",\n    \"email\": \"test2@example.com\",\n    \"password\": \"password\",\n    \"password_confirmation\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}api/auth/register",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Creates a new user."
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test2@example.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}api/auth/login",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Logs in a user and returns a JWT."
+					},
+					"response": []
+				},
+				{
+					"name": "Me",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}api/me",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"me"
+							]
+						},
+						"description": "Retrieves information about the authenticated user."
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}api/refresh",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"refresh"
+							]
+						},
+						"description": "Refreshes the authentication token."
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}api/logout",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"logout"
+							]
+						},
+						"description": "Logs out the authenticated user."
+					},
+					"response": []
+				}
+			],
+			"description": "The API uses JWT (JSON Web Token) for authentication. After registering or logging in, a token is provided which must be included in the Authorization header as a Bearer token for authenticated requests.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Task Management",
+			"item": [
+				{
+					"name": "All",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Task 1\",\n    \"description\": \"Lorem ipsum is a dummy or placeholder text commonly used in graphic design, publishing, and web development to fill empty spaces in a layout that do not yet have content.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}api/tasks",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"tasks"
+							]
+						},
+						"description": "Retrieves all tasks."
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Task 1\",\n    \"description\": \"Lorem ipsum is a dummy or placeholder text commonly used in graphic design, publishing, and web development to fill empty spaces in a layout that do not yet have content.\",\n    \"status\":\"pending\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}api/tasks",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"tasks"
+							]
+						},
+						"description": "Creates a new task."
+					},
+					"response": []
+				},
+				{
+					"name": "Read",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Task 1\",\n    \"description\": \"Lorem ipsum is a dummy or placeholder text commonly used in graphic design, publishing, and web development to fill empty spaces in a layout that do not yet have content.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}api/tasks/2",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"tasks",
+								"2"
+							]
+						},
+						"description": "Retrieves details of a specific task."
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\":\"completed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}api/tasks/2",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"tasks",
+								"2"
+							]
+						},
+						"description": "Updates the details of a specific task."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}api/tasks/1",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"tasks",
+								"1"
+							]
+						},
+						"description": "Deletes a specific task."
+					},
+					"response": []
+				}
+			],
+			"description": "The Task endpoints allow for creating, retrieving, updating, and deleting tasks."
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3Rhc2ttYW5hZ2VtZW50LnRlc3QvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MzIzNzM1NDgsImV4cCI6MTczMjM3NzE0OCwibmJmIjoxNzMyMzczNTQ4LCJqdGkiOiIzVlZ6ZTNETVl1aXUwZ083Iiwic3ViIjoiNCIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.wNH3Z7yAHlqki1qdGrtRzRJZaL_syB8TOBwFDGwmia4",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://taskmanagement.test/"
+		}
+	]
+}
