@@ -11,25 +11,38 @@ use App\Services\ApiResponseService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * Class TaskController
+ *
+ * This controller handles task-related actions such as creating, updating, and deleting tasks.
+ */
 class TaskController extends Controller
 {
-    public TaskRepository $taskRepository;
+    private TaskRepository $taskRepository;
 
-    /**
-     * TaskController constructor.
-     */
     public function __construct(TaskRepository $taskRepository)
     {
         $this->taskRepository = $taskRepository;
     }
 
-    public function index()
+    /**
+     * Display a listing of tasks.
+     *
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
     {
         return ApiResponseService::sendResponse(
-            TaskResource::collection($this->taskRepository->index(15)), '', 200
+            TaskResource::collection($this->taskRepository->index(15))
         );
     }
 
+    /**
+     * Store a newly created task.
+     *
+     * @param TaskCreateRequest $request
+     * @return JsonResponse|void
+     */
     public function store(TaskCreateRequest $request)
     {
         $validated = $request->validated();
@@ -43,7 +56,13 @@ class TaskController extends Controller
         }
     }
 
-    public function show(int $id): JsonResponse
+    /**
+     * Display the specified task.
+     *
+     * @param int $id
+     * @return JsonResponse|void
+     */
+    public function show(int $id)
     {
         try {
             $task = $this->taskRepository->getById($id);
@@ -54,27 +73,40 @@ class TaskController extends Controller
         }
     }
 
-    public function update(TaskUpdateRequest $request, int $id): JsonResponse
+    /**
+     * Update the specified task.
+     *
+     * @param TaskUpdateRequest $request
+     * @param int $id
+     * @return JsonResponse|void
+     */
+    public function update(TaskUpdateRequest $request, int $id)
     {
         $validated = $request->validated();
 
         try {
             $task = $this->taskRepository->update($validated, $id);
 
-            return ApiResponseService::sendResponse(new TaskResource($task), 'Task updated successfully', 200);
+            return ApiResponseService::sendResponse(new TaskResource($task), 'Task updated successfully');
         } catch (Exception $e) {
-            return ApiResponseService::rollback($e, 'Task update failed');
+            ApiResponseService::rollback($e, 'Task update failed');
         }
     }
 
-    public function destroy($id)
+    /**
+     * Remove the specified task.
+     *
+     * @param int $id
+     * @return JsonResponse|void
+     */
+    public function destroy(int $id)
     {
         try {
             $this->taskRepository->delete($id);
 
-            return ApiResponseService::sendResponse([], 'Task deleted successfully', 200);
+            return ApiResponseService::sendResponse([], 'Task deleted successfully');
         } catch (Exception $e) {
-            return ApiResponseService::rollback($e, 'Task deletion failed');
+            ApiResponseService::rollback($e, 'Task deletion failed');
         }
     }
 }
