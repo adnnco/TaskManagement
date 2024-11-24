@@ -3,41 +3,44 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\UserRegisterRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * Class AuthController
+ *
+ * This controller handles user authentication actions such as registration, login, logout, and token refresh.
+ */
 class AuthController extends Controller
 {
-
-    public function register(Request $request)
+    /**
+     * Register a new user.
+     *
+     * @param UserRegisterRequest $request
+     * @return JsonResponse
+     */
+    public function register(UserRegisterRequest $request): JsonResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+        $validated = $request->validated();
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
+        $user = User::create($validated);
 
         $token = auth()->login($user);
 
         return $this->respondWithToken($token);
-
     }
 
     /**
-     * Get a JWT via given credentials.
+     * Log in an existing user.
      *
+     * @param Request $request
      * @return JsonResponse
      */
-    public function login()
+    public function login(Request $request): JsonResponse
     {
-        $credentials = request(['email', 'password']);
+        $credentials = $request->only(['email', 'password']);
 
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -47,13 +50,12 @@ class AuthController extends Controller
     }
 
     /**
-     * Get the token array structure.
+     * Respond with a token.
      *
      * @param string $token
-     *
      * @return JsonResponse
      */
-    protected function respondWithToken($token)
+    protected function respondWithToken(string $token): JsonResponse
     {
         return response()->json([
             'access_token' => $token,
@@ -63,33 +65,33 @@ class AuthController extends Controller
     }
 
     /**
-     * Get the authenticated User.
+     * Get the authenticated user.
      *
      * @return JsonResponse
      */
-    public function me()
+    public function me(): JsonResponse
     {
         return response()->json(auth()->user());
     }
 
     /**
-     * Log the user out (Invalidate the token).
+     * Log out the authenticated user.
      *
      * @return JsonResponse
      */
-    public function logout()
+    public function logout(): JsonResponse
     {
-        auth()->logout(true);
+        auth()->logout();
 
         return response()->json(['message' => 'Successfully logged out']);
     }
 
     /**
-     * Refresh a token.
+     * Refresh the authentication token.
      *
      * @return JsonResponse
      */
-    public function refresh()
+    public function refresh(): JsonResponse
     {
         return $this->respondWithToken(auth()->refresh());
     }
